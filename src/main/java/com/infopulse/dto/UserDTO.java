@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDTO {
-
     @NotNull(message = "Name is required")
     private String name;
 
