@@ -1,0 +1,88 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.1.1.RELEASE'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'war'
+    id "org.springframework.boot" version "2.1.1.RELEASE"
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+}
+
+group 'com.infopulse'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven {
+            url("https://plugins.gradle.org/m2/")
+        }
+        maven{
+            url("https://repo.spring.io/libs-milestone")
+        }
+    }
+
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Greenwich.M2'
+        mavenBom "org.springframework.cloud:spring-cloud-stream-dependencies:Fishtown.M3"
+        mavenBom 'org.springframework.boot:spring-boot-dependencies:2.1.1.RELEASE'
+    }
+}
+
+dependencies {
+    // spring
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile "org.springframework.boot:spring-boot-starter-logging"
+    compile 'org.springframework.integration:spring-integration-core'
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+    compile 'org.springframework.kafka:spring-kafka'
+    compile 'org.springframework.boot:spring-boot-starter-cache'
+    compile 'org.springframework:spring-websocket'
+    // kafka
+    compile 'org.springframework.cloud:spring-cloud-stream'
+    compile 'org.springframework.cloud:spring-cloud-starter-stream-kafka'
+
+    //redis
+    compile 'org.springframework.data:spring-data-redis'
+    compile 'redis.clients:jedis:2.9.0'
+
+    //security
+    compile 'org.keycloak:keycloak-spring-security-adapter:4.8.1.Final'
+    compile 'org.springframework.boot:spring-boot-starter-security'
+
+
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.16'
+
+    compile group: 'org.modelmapper', name: 'modelmapper', version: '2.2.0'
+    compile(group: 'org.projectlombok', name: 'lombok', version: '1.18.2')
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hibernate4', version: '2.8.9'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.9'
+    compile(group: 'com.zaxxer', name: 'HikariCP', version: '3.2.0') {
+        exclude(module: 'tools')
+    }
+
+    compile 'com.google.guava:guava:21.0'
+    compile 'com.jayway.jsonpath:json-path:2.2.0'
+    compile 'org.liquibase:liquibase-core:3.6.3'
+
+    testCompile 'org.mockito:mockito-core:2.8.9'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile 'org.apache.commons:commons-lang3:3.0'
+    testCompile 'org.assertj:assertj-core:3.3.0'
+    testCompile 'io.jsonwebtoken:jjwt:0.2'
+}
