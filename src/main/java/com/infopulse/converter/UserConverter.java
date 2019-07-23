@@ -1,7 +1,6 @@
 package com.infopulse.converter;
 
 import com.infopulse.dto.UserDTO;
-import com.infopulse.entity.Ban;
 import com.infopulse.entity.User;
 import org.springframework.stereotype.Component;
 

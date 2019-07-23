@@ -42,15 +42,19 @@ public class UserService {
     @Transactional
     public User unbanUser(String login) {
         Optional<User> user = webChatUserRepository.findByLogin(login);
-        User u = user.orElseThrow(() -> new UserNotFoundException());
+        User u = user.orElseThrow(()-> new UserNotFoundException());
         Ban ban = u.getBan();
-        if (ban == null) {
+        if(ban == null){
             throw new UserNotBannedException();
         }
 
         webChatUserRepository.removeBan(u);
         return webChatUserRepository
                 .findByLogin(u.getLogin())
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(()-> new UserNotFoundException());
+    }
+
+    public Optional<User> findUserByLogin(String login){
+        return webChatUserRepository.findByLogin(login);
     }
 }
