@@ -24,6 +24,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class WebSocketController extends TextWebSocketHandler {
 
+    public final static String LOGIN = "login";
+
     @Autowired
     private UserService userService;
 
@@ -37,15 +39,10 @@ public class WebSocketController extends TextWebSocketHandler {
 
     private ObjectMapper mapper = new ObjectMapper();
 
-//    public WebSocketController(UserService userService, WebSocketService webSocketService) {
-//        this.userService = userService;
-//        this.webSocketService = webSocketService;
-//    } todo
-
     @Override
-    public void afterConnectionEstablished(WebSocketSession session){
+    public void afterConnectionEstablished(WebSocketSession session) {
         try {
-            String login = (String) session.getAttributes().get("login");
+            String login = (String) session.getAttributes().get(LOGIN);
             Optional<User> user = userService.findUserByLogin(login);
             if (user.isPresent()) {
                 if (user.get().getBan() != null) {
@@ -56,17 +53,18 @@ public class WebSocketController extends TextWebSocketHandler {
                 activeUsers.put(user.get().getLogin(), session);
                 sendActiveUsersList();
                 sendMessages(session);
+
             } else {
                 session.close();
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             log.error(e.getMessage());
         }
 
     }
 
     @Override
-    public void handleTextMessage(WebSocketSession session, TextMessage message){
+    public void handleTextMessage(WebSocketSession session, TextMessage message) {
         try {
             String login = (String) session.getAttributes().get("login");
             Optional<User> user = userService
@@ -80,28 +78,28 @@ public class WebSocketController extends TextWebSocketHandler {
             ReceiveMessage receiveMessage = mapper.readValue(jsonString, ReceiveMessage.class);
 
             Set<ConstraintViolation<ReceiveMessage>> errors = validator.validate(receiveMessage);
-            if(!errors.isEmpty()){
+            if (!errors.isEmpty()) {
                 sendErrorMessage(session, errors.iterator().next().getMessage());
                 return;
             }
 
-            switch(receiveMessage.getType()){
-                case "PRIVATE":{
-                    if(receiveMessage.getReceiver() == null){
+            switch (receiveMessage.getType()) {
+                case "PRIVATE": {
+                    if (receiveMessage.getReceiver() == null) {
                         sendErrorMessage(session, "receiver is required.");
                         return;
                     }
-                    if(!userService.findUserByLogin(receiveMessage.getReceiver()).isPresent()){
+                    if (!userService.findUserByLogin(receiveMessage.getReceiver()).isPresent()) {
                         sendErrorMessage(session, "receiver was not found.");
                         return;
                     }
 
-                    if(receiveMessage.getMessage() == null){
+                    if (receiveMessage.getMessage() == null) {
                         sendErrorMessage(session, "message is required");
                         return;
                     }
                     WebSocketSession receiverSession = activeUsers.get(receiveMessage.getReceiver());
-                    if(receiverSession == null){
+                    if (receiverSession == null) {
                         webSocketService.saveMessage(login,
                                 receiveMessage.getReceiver(),
                                 receiveMessage.getMessage());
@@ -113,15 +111,15 @@ public class WebSocketController extends TextWebSocketHandler {
                             receiveMessage.getMessage());
                     break;
                 }
-                case "BROADCAST":{
-                    if(receiveMessage.getMessage() == null){
+                case "BROADCAST": {
+                    if (receiveMessage.getMessage() == null) {
                         sendErrorMessage(session, "message is required");
                         return;
                     }
                     sendBroadcastMessage(login, receiveMessage.getMessage());
                     break;
                 }
-                case "LOGOUT":{
+                case "LOGOUT": {
                     activeUsers.remove(login);
                     sendActiveUsersList();
                     session.close();
@@ -129,12 +127,12 @@ public class WebSocketController extends TextWebSocketHandler {
                 }
             }
 
-        } catch (IOException e){
+        } catch (IOException e) {
             log.error(e.getMessage());
         }
     }
 
-    private void sendErrorMessage(WebSocketSession session, String message){
+    private void sendErrorMessage(WebSocketSession session, String message) {
         try {
             SendMessage sendMessage = new SendMessage();
             sendMessage.setMessage(message);
@@ -142,12 +140,12 @@ public class WebSocketController extends TextWebSocketHandler {
             sendMessage.setType("PRIVATE");
             TextMessage textMessage = new TextMessage(mapper.writeValueAsString(sendMessage));
             session.sendMessage(textMessage);
-        } catch(IOException e){
+        } catch (IOException e) {
             log.error(e.getMessage());
         }
     }
 
-    private void sendActiveUsersList(){
+    private void sendActiveUsersList() {
         try {
             Set<String> activeUsersLogin = activeUsers.keySet();
             SendMessage sendMessage = new SendMessage();
@@ -157,15 +155,15 @@ public class WebSocketController extends TextWebSocketHandler {
             sendMessage.setLogins(activeUsersLogin);
             TextMessage textMessage = new TextMessage(mapper.writeValueAsString(sendMessage));
             sendAll(textMessage);
-        }catch (IOException e){
+        } catch (IOException e) {
             log.error(e.getMessage());
         }
     }
 
-    private void sendAll(TextMessage textMessage){
+    private void sendAll(TextMessage textMessage) {
 
         activeUsers.entrySet().stream()
-                .map(entry->entry.getValue())
+                .map(entry -> entry.getValue())
                 .forEach(session -> {
                     try {
                         session.sendMessage(textMessage);
@@ -175,7 +173,7 @@ public class WebSocketController extends TextWebSocketHandler {
                 });
     }
 
-    private void sendPrivateMessage(WebSocketSession receiveSession, String sender, String messageToSend){
+    private void sendPrivateMessage(WebSocketSession receiveSession, String sender, String messageToSend) {
         try {
             SendMessage sendMessage = new SendMessage();
             sendMessage.setType("PRIVATE");
@@ -183,12 +181,12 @@ public class WebSocketController extends TextWebSocketHandler {
             sendMessage.setMessage(messageToSend);
             TextMessage textMessage = new TextMessage(mapper.writeValueAsString(sendMessage));
             receiveSession.sendMessage(textMessage);
-        }catch(IOException e){
+        } catch (IOException e) {
             log.error(e.getMessage());
         }
     }
 
-    private void sendBroadcastMessage(String sender, String messageToSend){
+    private void sendBroadcastMessage(String sender, String messageToSend) {
         try {
             SendMessage sendMessage = new SendMessage();
             sendMessage.setType("BROADCAST");
@@ -197,19 +195,19 @@ public class WebSocketController extends TextWebSocketHandler {
             webSocketService.saveBroadCastMessage(sender, messageToSend);
             TextMessage textMessage = new TextMessage(mapper.writeValueAsString(sendMessage));
             sendAll(textMessage);
-        }catch(IOException e){
+        } catch (IOException e) {
             log.error(e.getMessage());
         }
     }
 
-    private void sendMessages(WebSocketSession session){
+    private void sendMessages(WebSocketSession session) {
         try {
             List<SendMessage> messages = webSocketService
                     .getAllMessages((String) session.getAttributes().get("login"));
-            for(SendMessage sendMessage:messages){
+            for (SendMessage sendMessage : messages) {
                 session.sendMessage(new TextMessage(mapper.writeValueAsString(sendMessage)));
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             log.error(e.getMessage());
         }
 
