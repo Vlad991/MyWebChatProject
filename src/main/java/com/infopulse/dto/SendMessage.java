@@ -4,15 +4,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.Set;
 
 @Setter
 @Getter
 @NoArgsConstructor
-public class ReceiveMessage {
-    @NotNull(message = "type is required")
+public class SendMessage {
     private String type;
-    private String receiver;
+    private String sender;
     private String message;
+    private Set<String> logins;
 }
