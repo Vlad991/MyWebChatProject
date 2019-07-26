@@ -4,7 +4,7 @@ spring:
     password: 123root@
     driverClassName: com.mysql.cj.jdbc.Driver
     driverDialect: org.hibernate.dialect.MySQLDialect
-    url: jdbc:postgresql://localhost/webchatdb
+    url: jdbc:mysql://localhost:3306/webchatdb?verifyServerCertificate=false&useSSL=false&allowPublicKeyRetrieval=true&requireSSL=false&useLegacyDatetimeCode=false&amp&serverTimezone=UTC
   jpa:
     hibernate:
       ddl-auto: validate
@@ -32,6 +32,10 @@ server:
 
 redis:
   host: 127.0.0.1
+
+logging:
+  level:
+    root: DEBUG
 
 infopulse:
   serviceName: MyWebChatProject

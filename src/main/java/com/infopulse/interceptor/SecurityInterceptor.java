@@ -36,23 +36,23 @@ public class SecurityInterceptor implements HandshakeInterceptor {
 
         String token = httpServletRequest.getParameter("Authorization");
 
-        if(token == null){
+        if (token == null) {
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return false;
         }
 
-        if(!isExpired(token)){
+        if (isExpired(token)) {
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return false;
         }
 
-        if(!isUserRole(token)){
+        if (!isUserRole(token)) {
             response.setStatusCode(HttpStatus.FORBIDDEN);
             return false;
         }
 
         String login = getUserLogin(token);
-        if(login == null){
+        if (login == null) {
             response.setStatusCode(HttpStatus.BAD_REQUEST);
             return false;
         }
@@ -69,22 +69,22 @@ public class SecurityInterceptor implements HandshakeInterceptor {
 
     private boolean isExpired(String token) throws IOException {
         Map<String, Object> json = getBodyTokenAsJson(token);
-        Integer expr = (Integer)json.get("exp");
-        long dataInMills = expr.intValue()*1000l;
+        Integer expr = (Integer) json.get("exp");
+        long dataInMills = expr.intValue() * 1000l;
         return System.currentTimeMillis() - dataInMills > 0;
     }
 
     private boolean isUserRole(String token) throws IOException {
         Map<String, Object> json = getBodyTokenAsJson(token);
-        Map<String, Object> resources = (Map<String, Object>)json.get("resource_access");
-        Map<String, Object> service = (Map<String, Object>)resources.get(serviceName);
-        List<String> roles = (List<String>)service.get("roles");
+        Map<String, Object> resources = (Map<String, Object>) json.get("resource_access");
+        Map<String, Object> service = (Map<String, Object>) resources.get(serviceName);
+        List<String> roles = (List<String>) service.get("roles");
         return roles.contains("ROLE_USER");
     }
 
     private String getUserLogin(String token) throws IOException {
         Map<String, Object> json = getBodyTokenAsJson(token);
-        return (String)json.get("preferred_username");
+        return (String) json.get("preferred_username");
     }
 
     private Map<String, Object> getBodyTokenAsJson(String token) throws IOException {

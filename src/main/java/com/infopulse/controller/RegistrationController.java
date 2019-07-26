@@ -3,6 +3,7 @@ package com.infopulse.controller;
 import com.infopulse.dto.UserDTO;
 import com.infopulse.service.RegistrationControllerService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
+@CrossOrigin
 public class RegistrationController {
 
     private RegistrationControllerService registrationControllerService;

@@ -25,15 +25,14 @@ public class UserControllerService {
     }
 
     public UserDTO banUser(String login) {
-        if(login == null) {
+        if (login == null) {
             throw new UserLoginNotNullException("User login is required");
         }
-
         return userConverter.convertToDto(userService.banUser(login));
     }
 
     public UserDTO unbanUser(String login) {
-        if(login == null) {
+        if (login == null) {
             throw new UserLoginNotNullException("User login is required");
         }
 

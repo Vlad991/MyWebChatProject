@@ -15,9 +15,11 @@ public class RegistrationControllerService {
     private ApplicationEventPublisher applicationEventPublisher;
 
     public RegistrationControllerService(UserConverter userConverter,
-                                         RegistrationService registrationService) {
+                                         RegistrationService registrationService,
+                                         ApplicationEventPublisher applicationEventPublisher) {
         this.userConverter = userConverter;
         this.registrationService = registrationService;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     public UserDTO save(UserDTO userDTO) {

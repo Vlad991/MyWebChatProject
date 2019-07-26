@@ -40,9 +40,21 @@ public class WebSocketService {
         List<SendMessage> privateMessageDtos = messageConverter
                 .toListPrivateDto(privateMessages);
         List<BroadcastMessage> broadcastMessages = broadcastService.getAll();
-        List<SendMessage> broadcastMessageDtos = messageConverter
-                .toListBroadcastDtos(broadcastMessages);
-        privateMessageDtos.addAll(broadcastMessageDtos);
-        return privateMessageDtos;
+        List<SendMessage> broadcastMessageDtos = null;
+        if (broadcastMessages != null) {
+            broadcastMessageDtos = messageConverter
+                    .toListBroadcastDtos(broadcastMessages);
+        }
+        if (privateMessageDtos != null && broadcastMessageDtos != null) {
+            privateMessageDtos.addAll(broadcastMessageDtos);
+            return privateMessageDtos;
+        }
+        if (privateMessageDtos != null && broadcastMessageDtos == null) {
+            return privateMessageDtos;
+        }
+        if (privateMessageDtos == null && broadcastMessageDtos != null) {
+            return broadcastMessageDtos;
+        }
+        return null;
     }
 }

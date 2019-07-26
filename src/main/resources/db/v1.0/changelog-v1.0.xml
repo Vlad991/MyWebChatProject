@@ -52,7 +52,7 @@
                 <constraints primaryKeyName="pk_ban" primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="chatuser_id" type="bigint">
+            <column name="user_id" type="bigint">
                 <constraints nullable="false"
                              foreignKeyName="fk_user_ban"
                              references="webchat_users(id)"/>
