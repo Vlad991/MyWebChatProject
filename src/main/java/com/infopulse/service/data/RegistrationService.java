@@ -14,7 +14,7 @@ public class RegistrationService {
 
     private WebChatUserRepository webChatUserRepository;
 
-    private UserConverter userConverter;   //TODO
+    private UserConverter userConverter;
 
     public RegistrationService(WebChatUserRepository webChatUserRepository, UserConverter userConverter) {
         this.webChatUserRepository = webChatUserRepository;
@@ -25,7 +25,7 @@ public class RegistrationService {
     public User save(User currentUser) {
         Optional<User> oldUser = webChatUserRepository.findByLogin(currentUser.getLogin());
         oldUser.ifPresent(entity -> {
-            throw new UserAlreadyExistsException();
+            throw new UserAlreadyExistsException("User already exist.");
         });
         return webChatUserRepository.save(currentUser);
     }

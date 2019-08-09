@@ -2,6 +2,7 @@ package com.infopulse.controller;
 
 import com.infopulse.dto.UserDTO;
 import com.infopulse.service.RegistrationControllerService;
+import com.infopulse.service.data.RegistrationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;

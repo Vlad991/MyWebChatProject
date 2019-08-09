@@ -32,6 +32,7 @@ import java.util.Arrays;
 public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     /**
      * Configure authentication manager.
+     *
      * @param auth auth manager
      * @throws Exception exception is throw
      */
@@ -43,6 +44,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     /**
      * Sets filter registration bean.
      * Bean is disabled by default.
+     *
      * @param filter filter
      * @return registration bean
      */
@@ -56,6 +58,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     /**
      * Gets keycloak authentication provider.
+     *
      * @return provider
      */
     @Override
@@ -72,6 +75,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     /**
      * Sets authentication strategy.
      * Null authentication sessions strategy is used.
+     *
      * @return authentication strategy
      */
     @Bean
@@ -82,6 +86,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     /**
      * Exception translation filter to handle <code>AuthenticationException</code> thrown within the filter chain.
+     *
      * @return Exception translation filter, which uses default Keycloak <code>authenticationEntryPoint</code>
      * @throws Exception exception is throw
      */
@@ -93,6 +98,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     /**
      * Allows url encoded slash http firewall.
+     *
      * @return firewall
      */
     @Bean
@@ -109,7 +115,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -117,6 +123,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     /**
      * Configure http security.
+     *
      * @param http http
      * @throws Exception exception is throw
      */
@@ -135,8 +142,8 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .addFilterBefore(exceptionTranslationFilter(), KeycloakPreAuthActionsFilter.class)
                 .authorizeRequests()
 
-                .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PATCH, "/ban/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/ban/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/registration").permitAll()

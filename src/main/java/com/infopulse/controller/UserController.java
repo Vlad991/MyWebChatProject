@@ -1,5 +1,6 @@
 package com.infopulse.controller;
 
+import com.infopulse.converter.UserConverter;
 import com.infopulse.dto.UserDTO;
 import com.infopulse.service.UserControllerService;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ public class UserController {
 
     @PatchMapping(value = "/ban/{login}")
     public UserDTO banUser(@PathVariable("login") String login) {
+
         return userControllerService.banUser(login);
     }
 

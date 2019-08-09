@@ -22,12 +22,12 @@ public class MessageService {
 
     private BinderAwareChannelResolver resolver;
 
-    public MessageService(BinderAwareChannelResolver resolver){
+    public MessageService(BinderAwareChannelResolver resolver) {
         this.resolver = resolver;
     }
 
     @EventListener
-    public void publishEvent(UserDTO userDTO){
+    public void publishEvent(UserDTO userDTO) {
         Payload<UserDTO> payload = new Payload<>();
         payload.setEvent(EventType.CREATE.toString());
         payload.setObjectToSend(userDTO);
@@ -42,7 +42,7 @@ public class MessageService {
                 .build();
 
         MessageChannel channel = resolver.resolveDestination("user-event-output");
-        if(!channel.send(message)){
+        if (!channel.send(message)) {
             log.error("Can not send message");
         }
     }

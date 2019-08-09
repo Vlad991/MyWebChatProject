@@ -6,13 +6,14 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "name")
-public class Ban {
+@Table(name = "bans")
+public class Ban implements Serializable {
     @Id
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")

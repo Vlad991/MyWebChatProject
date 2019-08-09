@@ -6,10 +6,12 @@ import com.infopulse.entity.BroadcastMessage;
 import com.infopulse.entity.Message;
 import com.infopulse.service.data.BroadcastService;
 import com.infopulse.service.data.PrivateMessageService;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Profile("!test")
 @Service
 public class WebSocketService {
 

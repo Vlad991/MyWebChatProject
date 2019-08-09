@@ -210,7 +210,5 @@ public class WebSocketController extends TextWebSocketHandler {
         } catch (IOException e) {
             log.error(e.getMessage());
         }
-
-
     }
 }

@@ -25,17 +25,18 @@ public class MessageConverter {
         return sendMessage;
     }
 
-    public List<SendMessage> toListBroadcastDtos(List<BroadcastMessage> broadcastMessages){
+    public List<SendMessage> toListBroadcastDtos(List<BroadcastMessage> broadcastMessages) {
         return broadcastMessages.stream()
-                .map(entity-> fromBroadcastMessageToDto(entity))
+                .map(entity -> fromBroadcastMessageToDto(entity))
                 .collect(Collectors.toList());
     }
 
-    public SendMessage fromBroadcastMessageToDto(BroadcastMessage broadcastMessage){
+    public SendMessage fromBroadcastMessageToDto(BroadcastMessage broadcastMessage) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setType("BROADCAST");
         sendMessage.setSender(broadcastMessage.getSender());
         sendMessage.setMessage(broadcastMessage.getMessage());
         return sendMessage;
     }
+
 }

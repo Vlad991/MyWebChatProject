@@ -17,10 +17,11 @@ public class RedisConfiguration {
     private String redisPort;
 
     private JedisConnectionFactory jedisConnectionFactory() {
-        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
-        jedisConnectionFactory.setHostName(redisHost);
-        jedisConnectionFactory.setPort(Integer.parseInt(redisPort));
-        return jedisConnectionFactory;
+        JedisConnectionFactory jedisConFactory
+                = new JedisConnectionFactory();
+        jedisConFactory.setHostName(redisHost);
+        jedisConFactory.setPort(Integer.parseInt(redisPort));
+        return jedisConFactory;
     }
 
     @Bean

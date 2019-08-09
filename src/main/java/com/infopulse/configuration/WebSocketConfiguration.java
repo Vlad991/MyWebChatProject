@@ -25,7 +25,7 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
     }
 
     @Bean
-    public WebSocketController getWebSocketController(){
+    public WebSocketController getWebSocketController() {
         return new WebSocketController();
     }
 }

@@ -12,9 +12,9 @@ public class UserConverter {
 
     public UserDTO convertToDto(User user) {
         UserDTO userDTO = new UserDTO();
-        user.setName(user.getName());
-        user.setLogin(user.getLogin());
-        if(user.getBan() != null) {
+        userDTO.setName(user.getName());
+        userDTO.setLogin(user.getLogin());
+        if (user.getBan() != null) {
             userDTO.setIsBanned(true);
         } else {
             userDTO.setIsBanned(false);
@@ -26,17 +26,12 @@ public class UserConverter {
         User user = new User();
         user.setLogin(userDTO.getLogin());
         user.setName(userDTO.getName());
-//        Ban ban = new Ban();
-//        ban.setUser(user);
-//        ban.setId(????)
-//        user.setBan(ban);
-//        TODO
         return user;
     }
 
     public List<UserDTO> convertToListDto(List<User> users) {
         return users.stream()
                 .map(this::convertToDto)
-                .collect(Collectors.toList()); //TODO
+                .collect(Collectors.toList());
     }
 }

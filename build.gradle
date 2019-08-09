@@ -31,7 +31,6 @@ repositories {
             url("https://repo.spring.io/libs-milestone")
         }
     }
-
 }
 
 dependencyManagement {
@@ -61,23 +60,26 @@ dependencies {
     compile 'redis.clients:jedis:2.9.0'
 
     //security
-    compile 'org.keycloak:keycloak-spring-security-adapter:4.8.1.Final'
+    compile group: 'org.keycloak', name: 'keycloak-spring-security-adapter', version: '6.0.1'
     compile 'org.springframework.boot:spring-boot-starter-security'
 
 
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.16'
 
-    compile group: 'org.modelmapper', name: 'modelmapper', version: '2.2.0'
-    compile(group: 'org.projectlombok', name: 'lombok', version: '1.18.2')
-    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hibernate4', version: '2.8.9'
-    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.9'
-    compile(group: 'com.zaxxer', name: 'HikariCP', version: '3.2.0') {
+    compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.5'
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hibernate4', version: '2.9.9'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.3.Final'
+    compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.4.3.Final'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.9'
+    compile (group: 'com.zaxxer', name: 'HikariCP', version: '3.3.1') {
         exclude(module: 'tools')
     }
 
-    compile 'com.google.guava:guava:21.0'
-    compile 'com.jayway.jsonpath:json-path:2.2.0'
-    compile 'org.liquibase:liquibase-core:3.6.3'
+//    compile 'com.google.guava:guava:21.0'
+    compile group: 'com.google.guava', name: 'guava', version: '28.0-jre'
+    compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.4.0'
+    compile group: 'org.liquibase', name: 'liquibase-core', version: '3.7.0'
 
     testCompile 'org.mockito:mockito-core:2.8.9'
     testCompile 'junit:junit:4.12'

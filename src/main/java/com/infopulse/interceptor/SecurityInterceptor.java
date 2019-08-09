@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import static org.springframework.messaging.simp.stomp.StompHeaders.LOGIN;
+import static com.infopulse.controller.WebSocketController.LOGIN;
 
 public class SecurityInterceptor implements HandshakeInterceptor {
 
