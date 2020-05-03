@@ -67,8 +67,7 @@ public class WebSocketController extends TextWebSocketHandler {
     public void handleTextMessage(WebSocketSession session, TextMessage message) {
         try {
             String login = (String) session.getAttributes().get("login");
-            Optional<User> user = userService
-                    .findUserByLogin(login);
+            Optional<User> user = userService.findUserByLogin(login);
 
             if (user.isPresent() && user.get().getBan() != null) {
                 session.close();

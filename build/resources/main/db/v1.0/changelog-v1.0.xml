@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+    <changeSet author="alex" id="changelog-1.0" runOnChange="true">
+
+        <createTable tableName="webchat_users">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKeyName="pk_chatuser"
+                             primaryKey="true"
+                             nullable="false"/>
+            </column>
+
+            <column name="login" type="varchar(255)">
+                <constraints uniqueConstraintName="webchat_user_login" unique="true"/>
+            </column>
+
+            <column name="name" type="varchar(255)"/>
+        </createTable>
+
+        <createTable tableName="webchat_messages">
+
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKeyName="pk_messages"
+                             primaryKey="true"
+                             nullable="false"/>
+            </column>
+
+            <column name="body" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="receiver_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_user_messages_receiver"
+                             references="webchat_users(id)"/>
+            </column>
+
+            <column name="sender_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_user_messages_sender"
+                             references="webchat_users(id)"/>
+            </column>
+
+        </createTable>
+
+        <createTable tableName="bans">
+
+            <column name="id" type="bigint">
+                <constraints primaryKeyName="pk_ban" primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_user_ban"
+                             references="webchat_users(id)"/>
+            </column>
+
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>

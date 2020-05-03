@@ -17,7 +17,7 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
     private String serviceName;
 
     @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(getWebSocketController(), "/socket")
                 .setAllowedOrigins("*")
                 .addInterceptors(new SecurityInterceptor(serviceName))
